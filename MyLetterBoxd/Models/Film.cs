@@ -5,5 +5,6 @@ namespace MyLetterBoxd.Models
         private int Id {get; set; }
         private string Title {get; set; }
         private string Genre {get; set; }
+        private double Rating {get; set; }
     }
 }
