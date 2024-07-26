@@ -17,5 +17,10 @@ Furthermore, you are able to create a watchlist of movies you would like to see 
 # Delete Database (for testing)
 1. dotnet ef database drop --force
 
+# Table Per Hierarchy
+Entity Framework Core will represent an object-oriented hierarchy in a single table that takes the name of the base class and includes a "discriminator" column to identify the specific type for each row. 
+In our case we have Entertainment (abstract parent class), Film and Serie (concrete child classes). Only a table Entertainment is present in the database containing Film and Serie instances.
+Our discriminator is called EntertainmentType, which is either 1 (Film) or 2 (Serie).
+
 # Run Program
 1. dotnet run
