@@ -19,4 +19,3 @@ Furthermore, you are able to create a watchlist of movies you would like to see 
 
 # Run Program
 1. dotnet run
-
