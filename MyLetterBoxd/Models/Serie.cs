@@ -1,9 +1,7 @@
 namespace MyLetterBoxd.Models
 {
-    public class Serie
+    public class Serie : Entertainment
     {
-        private int Id {get; set; }
-        private string Title {get; set; }
-        private string Seasons {get; set; }
+        public int Seasons {get; set; }
     }
 }
