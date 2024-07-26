@@ -40,7 +40,7 @@ namespace MyLetterBoxd.Service
             var user = await _context.Users
                                     .FirstOrDefaultAsync(u => u.Username == request.Username);
 
-            if (user == null || user.Password == request.Password)
+            if (user == null || !user.Password.Equals(request.Password))
             {
                 // Invalid username or password
                 return null;

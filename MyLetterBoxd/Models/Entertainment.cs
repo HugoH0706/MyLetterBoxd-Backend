@@ -10,8 +10,8 @@ namespace MyLetterBoxd.Models
     {
 
         public int ID {get; set; }
-        public string Title {get; set; }
-        public string Genre {get; set; }
+        public required string Title {get; set; }
+        public required string Genre {get; set; }
         public List<string> Directors {get; set; } = new List<string>();
         public List<string> Actors {get; set; } = new List<string>();
         public Rating? Rating {get; set; }
