@@ -10,3 +10,13 @@ Furthermore, you are able to create a watchlist of movies you would like to see 
 5. Add movie to your watchlist
 6. Add movie with rating, to your watched movies
  
+# Updating Database
+1. dotnet ef migrations add {UPDATE_NAME}
+2. dotnet ef database update
+
+# Delete Database (for testing)
+1. dotnet ef database drop --force
+
+# Run Program
+1. dotnet run
+
