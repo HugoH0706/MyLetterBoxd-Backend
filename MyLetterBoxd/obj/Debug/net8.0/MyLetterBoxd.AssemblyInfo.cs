@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MyLetterBoxd")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4dbd5dd900a98c0fc1c1d7afef9e72f2c4f39a1f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3a3b464f471c3522a2739792fd22fb72f5c457ef")]
 [assembly: System.Reflection.AssemblyProductAttribute("MyLetterBoxd")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MyLetterBoxd")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

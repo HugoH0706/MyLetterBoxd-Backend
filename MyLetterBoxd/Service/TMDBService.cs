@@ -27,13 +27,13 @@ namespace MyLetterBoxd.Service
             var client = new RestClient(options);
             var request = new RestRequest("");
             request.AddHeader("accept", "application/json");
-            request.AddHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4YTZmODM3MjgxYzBiOWUzYWQyMWJlY2Q4ZDg1ZWY5MyIsIm5iZiI6MTcyMjMzMTU5Mi43NTU1MjEsInN1YiI6IjY2YTc5YjQxNDU5NjEwODkzNmM2ODhhZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.gUW1naYK8RZHuMPluMYjPbq0-zVd0qsK4cwpid0x1x4");
+            request.AddHeader("Authorization", Environment.GetEnvironmentVariable("API_KEY"));
             var response = await client.GetAsync(request);
             Console.WriteLine(response.Content);
             
+            // https://developer.themoviedb.org/reference/discover-movie
             var tmdbResponse = JsonConvert.DeserializeObject(response.Content);
-            Console.WriteLine(tmdbResponse);
-            // Console.WriteLine(response);
+            //Console.WriteLine(tmdbResponse);
 
             // if (!response.IsSuccessful)
             // {
