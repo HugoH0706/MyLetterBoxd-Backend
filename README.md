@@ -24,3 +24,20 @@ Our discriminator is called EntertainmentType, which is either 1 (Film) or 2 (Se
 
 # Run Program
 1. dotnet run
+
+
+# TMDB
+TMDB is a large database for movies and tv shows. It allows developers to create an API key which is used
+to connect to TMDB's API and fetch movies and series. Example of a request using RestSharp:
+using RestSharp;
+
+```
+var options = new RestClientOptions("https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc");
+var client = new RestClient(options);
+var request = new RestRequest("");
+request.AddHeader("accept", "application/json");
+request.AddHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4YTZmODM3MjgxYzBiOWUzYWQyMWJlY2Q4ZDg1ZWY5MyIsIm5iZiI6MTcyMjMzMTYxMy4zMjEyODQsInN1YiI6IjY2YTc5YjQxNDU5NjEwODkzNmM2ODhhZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.I-ZLf5ymqNPZTgPlaNsVYDU5kYb0_00M5ScUe5c2Yx4");
+var response = await client.GetAsync(request);
+
+Console.WriteLine("{0}", response.Content);
+```
