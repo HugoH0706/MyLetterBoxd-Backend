@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using MyLetterBoxd.Models;
 using MyLetterBoxd.Service;
 using System.Threading.Tasks;
 
@@ -18,7 +19,6 @@ namespace MyLetterBoxd.Controllers
         [HttpGet("movies")]
         public async Task<IActionResult> FetchPopularMovies()
         {
-            // Fetch popular movies from TMDB
             var movies = await _tmdbService.GetPopularMoviesAsync();
 
             if (movies == null)
@@ -26,10 +26,29 @@ namespace MyLetterBoxd.Controllers
                 return BadRequest("Failed to fetch movies from TMDB.");
             }
 
-            // Save movies to the database
-            await _tmdbService.SaveMoviesAsync(movies);
+            // await _tmdbService.SaveMoviesAsync(movies);
 
             return Ok("Movies fetched and saved successfully.");
         }
+
+        // [HttpGet("genres")]
+        // public async Task<IActionResult> FetchAllGenres()
+        // {
+        //     List<Genre> genres = await _tmdbService.GetGenresAsync();
+
+        //     if (genres == null)
+        //     {
+        //         return BadRequest("Failed to fetch movies from TMDB.");
+        //     }
+            
+        //     foreach(Genre genre in genres)
+        //     {
+        //         Console.WriteLine($"ID: {genre.Id}, Name: {genre.Name}");
+        //     }
+
+        //     // await _tmdbService.SaveGenresAsync(genres);
+
+        //     return Ok("Movies fetched and saved successfully.");
+        // }
     }
 }

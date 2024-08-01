@@ -11,11 +11,14 @@ namespace MyLetterBoxd.Models
 
         public int ID {get; set; }
         public required string Title {get; set; }
-        public required string Genre {get; set; }
-        public List<string> Directors {get; set; } = new List<string>();
-        public List<string> Actors {get; set; } = new List<string>();
-        public Rating? Rating {get; set; }
+        public required string Description{get; set; }
+        public required string ReleaseDate {get; set; }
+        public required double Rating {get; set; }
+        public List<Genre> Genre {get; set; } = new List<Genre>();
+        public List<Cast> Actors {get; set; } = new List<Cast>();
+        public List<Cast> Directors {get; set; } = new List<Cast>();
         public ICollection<UserEntertainment> UserEntertainments { get; set; } = new List<UserEntertainment>();
+        public ICollection<GenreEntertainment> GenreEntertainments { get; set; } = new List<GenreEntertainment>();
 
     }
 }
