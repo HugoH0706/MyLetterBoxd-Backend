@@ -41,3 +41,9 @@ var response = await client.GetAsync(request);
 
 Console.WriteLine("{0}", response.Content);
 ```
+
+API endpoints to retrieve information from TMDB:
+1. https://api.themoviedb.org/3/movie/movie_id/credits?language=en-US --> get cast (actors) of a specific movie
+2. https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1 --> get most popular movies (on page 1)
+3. https://api.themoviedb.org/3/genre/movie/list?language=en --> get all genre-id tuples  
+4. https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc --> get recent movies from best rated to worst rated
