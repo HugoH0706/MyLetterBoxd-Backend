@@ -26,29 +26,21 @@ namespace MyLetterBoxd.Controllers
                 return BadRequest("Failed to fetch movies from TMDB.");
             }
 
-            // await _tmdbService.SaveMoviesAsync(movies);
+            foreach(var film in movies)
+            {
+                Console.WriteLine($"Title: {film.Title}");
+                Console.WriteLine($"Overview: {film.Description}");
+                Console.WriteLine($"Release Date: {film.ReleaseDate}");
+                Console.WriteLine($"Vote Average: {film.Rating}");
+                //Console.WriteLine("Genre IDs: " + string.Join(", ", film.Genre.Select(g => g.Name)));
+                //Console.WriteLine("Actors: " + string.Join(", ", film.Actors.Select(a => a.Name + "(" + a.Character + ")")));
+                //Console.WriteLine("Directors: " + string.Join(", ", film.Directors.Select(a => a.Name)));
+                Console.WriteLine();
+            }
+
+            await _tmdbService.SaveMoviesAsync(movies);
 
             return Ok("Movies fetched and saved successfully.");
         }
-
-        // [HttpGet("genres")]
-        // public async Task<IActionResult> FetchAllGenres()
-        // {
-        //     List<Genre> genres = await _tmdbService.GetGenresAsync();
-
-        //     if (genres == null)
-        //     {
-        //         return BadRequest("Failed to fetch movies from TMDB.");
-        //     }
-            
-        //     foreach(Genre genre in genres)
-        //     {
-        //         Console.WriteLine($"ID: {genre.Id}, Name: {genre.Name}");
-        //     }
-
-        //     // await _tmdbService.SaveGenresAsync(genres);
-
-        //     return Ok("Movies fetched and saved successfully.");
-        // }
     }
 }

@@ -8,11 +8,11 @@ namespace MyLetterBoxd.Database
         public MyLetterBoxdContext(DbContextOptions<MyLetterBoxdContext> options) : base(options) { }
 
         public DbSet<User> Users { get; set; }
-        public DbSet<Film> Films { get; set; }
         public DbSet<Genre> Genres { get; set; }
-        public DbSet<Serie> Series { get; set; }
+        public DbSet<Cast> Casts { get; set; }
         public DbSet<UserEntertainment> UserEntertainments { get; set; }
         public DbSet<GenreEntertainment> GenreEntertainments { get; set; }
+        public DbSet<CastEntertainment> CastEntertainments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -34,10 +34,10 @@ namespace MyLetterBoxd.Database
                 .HasOne(ue => ue.Entertainment)
                 .WithMany(e => e.UserEntertainments)
                 .HasForeignKey(ue => ue.EntertainmentID);
-            
+
             modelBuilder.Entity<GenreEntertainment>()
-                .HasKey(ge => new {ge.GenreID, ge.EntertainmentID});
-            
+                .HasKey(ge => new { ge.GenreID, ge.EntertainmentID });
+
             modelBuilder.Entity<GenreEntertainment>()
                 .HasOne(ge => ge.Genre)
                 .WithMany(g => g.GenreEntertainments)
@@ -46,8 +46,21 @@ namespace MyLetterBoxd.Database
             modelBuilder.Entity<GenreEntertainment>()
                 .HasOne(ge => ge.Entertainment)
                 .WithMany(e => e.GenreEntertainments)
-                .HasForeignKey(ue => ue.EntertainmentID);
+                .HasForeignKey(ge => ge.EntertainmentID);
 
+            modelBuilder.Entity<CastEntertainment>()
+                .HasKey(ce => new {ce.CastID, ce.EntertainmentID});
+            
+            modelBuilder.Entity<CastEntertainment>()
+                .HasOne(ce => ce.Cast)
+                .WithMany(c => c.CastEntertainments)
+                .HasForeignKey(ce => ce.CastID);
+
+            modelBuilder.Entity<CastEntertainment>()
+                .HasOne(ce => ce.Entertainment)
+                .WithMany(e => e.CastEntertainments)
+                .HasForeignKey(ce => ce.EntertainmentID);   
+            
             //  modelBuilder.Entity<User>().HasData(
             //     new User { ID = 1, Username = "JD", FirstName = "John", LastName = "Doe", Password = "password" },
             //     new User { ID = 2, Username = "JM", FirstName = "Jane", LastName = "Smith", Password = "password" }

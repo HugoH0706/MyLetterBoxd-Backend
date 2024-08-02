@@ -22,6 +22,7 @@ namespace MyLetterBoxd.Service
 
         public async Task<List<Genre>> GetGenresAsync()
         {
+            // Get all genres with their TMDB IDs
             var options = new RestClientOptions("https://api.themoviedb.org/3/genre/movie/list?language=en"); 
             var client = new RestClient(options);
             var request = new RestRequest("");
@@ -37,6 +38,7 @@ namespace MyLetterBoxd.Service
 
         public async Task<List<Cast>> GetActorsDirectorsAsync(int movie_id)
         {
+            // Use movie_id to get JSON including cast(Actors) and crew(Director), extract useful data and store in List<Cast>
             string API_ENDPOINT = "https://api.themoviedb.org/3/movie/" + movie_id + "/credits?language=en-US";
             var options = new RestClientOptions(API_ENDPOINT); 
             var client = new RestClient(options);
@@ -73,18 +75,12 @@ namespace MyLetterBoxd.Service
                 .ToList();
 
             cast.AddRange(directors);
-
-            // foreach (var castMember in cast)
-            // {
-            //     Console.WriteLine($"Name: {castMember.Name}");
-            //     Console.WriteLine($"Character: {castMember.Character}");
-            //     Console.WriteLine($"Role: {castMember.Role}");
-            //     Console.WriteLine();
-            // }
             return cast;
         }
+
         public async Task<List<Entertainment>> GetPopularMoviesAsync()
         {
+            // Get top rated movies, for each movie link genre id to genre and find corresponding actors and director
             var options = new RestClientOptions("https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1"); 
             var client = new RestClient(options);
             var request = new RestRequest("");
@@ -93,14 +89,13 @@ namespace MyLetterBoxd.Service
             var response = await client.GetAsync(request);
             
             List<Genre> availableGenres = await GetGenresAsync();
+            var entertainments = new List<Entertainment>();
             
-
             JObject parsedResponse = JObject.Parse(response.Content);
             JToken resultsToken = parsedResponse["results"];
             if (resultsToken != null)
             {
                 List<Film> films = resultsToken.ToObject<List<Film>>();
-
                 foreach (var result in resultsToken)
                 {
                     List<Cast> availableCast = await GetActorsDirectorsAsync(result.Value<int>("id"));
@@ -111,49 +106,17 @@ namespace MyLetterBoxd.Service
                         Description = result.Value<string>("overview"),
                         ReleaseDate = result.Value<string>("release_date"),
                         Rating = result.Value<double>("vote_average"),
-                        Genre = result["genre_ids"].Select(id => availableGenres.FirstOrDefault(g => g.Id == (int)id)).Where(g => g != null).ToList(),
-                        Actors = availableCast.Where(c => c.Role == "Acting").ToList(),
-                        Directors = availableCast.Where(c => c.Role == "Directing").ToList()
+                        //Genre = result["genre_ids"].Select(id => availableGenres.FirstOrDefault(g => g.Id == (int)id)).Where(g => g != null).ToList(),
+                        // Actors = availableCast.Where(c => c.Role == "Acting").ToList(),
+                        // Directors = availableCast.Where(c => c.Role == "Directing").ToList()
                     };
-
-                    Console.WriteLine($"Title: {film.Title}");
-                    Console.WriteLine($"Overview: {film.Description}");
-                    Console.WriteLine($"Release Date: {film.ReleaseDate}");
-                    Console.WriteLine($"Vote Average: {film.Rating}");
-                    Console.WriteLine("Genre IDs: " + string.Join(", ", film.Genre.Select(g => g.Name)));
-                    Console.WriteLine("Actors: " + string.Join(", ", film.Actors.Select(a => a.Name + "(" + a.Character + ")")));
-                    Console.WriteLine("Directors: " + string.Join(", ", film.Directors.Select(a => a.Name)));
-                    Console.WriteLine();
+                    entertainments.Add(film);
                 }
             }
             else
             {
                 Console.WriteLine("No results found in the response.");
             }
-
-
-            // if (!response.IsSuccessful)
-            // {
-            //     return null;
-            // }
-
-            // var movies = JObject.Parse(response.Content)["results"].ToObject<List<TmdbMovie>>();
-            // Console.WriteLine(movies);
-            var entertainments = new List<Entertainment>();
-            
-            // foreach (var movie in movies)
-            // {
-            //     // Check if the movie already exists in the database
-            //     if (!_context.Set<Entertainment>().Any(e => e.Title == movie.Title))
-            //     {
-            //         entertainments.Add(new Film
-            //         {
-            //             Title = movie.Title,
-            //             Genre = string.Join(", ", movie.GenreIds), // Simplified, should map genre IDs to names
-            //             Rating = Rating.FIVE // Placeholder, you might want to map TMDb rating to your Rating enum
-            //         });
-            //     }
-            // }
 
             return entertainments;
         }
