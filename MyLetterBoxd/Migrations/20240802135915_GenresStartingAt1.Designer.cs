@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyLetterBoxd.Database;
 
@@ -10,9 +11,11 @@ using MyLetterBoxd.Database;
 namespace MyLetterBoxd.Migrations
 {
     [DbContext(typeof(MyLetterBoxdContext))]
-    partial class MyLetterBoxdContextModelSnapshot : ModelSnapshot
+    [Migration("20240802135915_GenresStartingAt1")]
+    partial class GenresStartingAt1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

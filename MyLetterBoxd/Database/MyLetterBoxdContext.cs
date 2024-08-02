@@ -10,6 +10,7 @@ namespace MyLetterBoxd.Database
         public DbSet<User> Users { get; set; }
         public DbSet<Genre> Genres { get; set; }
         public DbSet<Cast> Casts { get; set; }
+        public DbSet<Entertainment> Entertainments { get; set; }
         public DbSet<UserEntertainment> UserEntertainments { get; set; }
         public DbSet<GenreEntertainment> GenreEntertainments { get; set; }
         public DbSet<CastEntertainment> CastEntertainments { get; set; }
