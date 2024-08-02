@@ -21,6 +21,45 @@ namespace MyLetterBoxd.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
+            modelBuilder.Entity("MyLetterBoxd.Models.Cast", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<string>("Character")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Casts");
+                });
+
+            modelBuilder.Entity("MyLetterBoxd.Models.CastEntertainment", b =>
+                {
+                    b.Property<int>("CastID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EntertainmentID")
+                        .HasColumnType("int");
+
+                    b.HasKey("CastID", "EntertainmentID");
+
+                    b.HasIndex("EntertainmentID");
+
+                    b.ToTable("CastEntertainments");
+                });
+
             modelBuilder.Entity("MyLetterBoxd.Models.Entertainment", b =>
                 {
                     b.Property<int>("ID")
@@ -29,23 +68,19 @@ namespace MyLetterBoxd.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<string>("Actors")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Directors")
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<int>("EntertainmentType")
                         .HasColumnType("int");
 
-                    b.Property<string>("Genre")
+                    b.Property<double>("Rating")
+                        .HasColumnType("double");
+
+                    b.Property<string>("ReleaseDate")
                         .IsRequired()
                         .HasColumnType("longtext");
-
-                    b.Property<int?>("Rating")
-                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -58,6 +93,38 @@ namespace MyLetterBoxd.Migrations
                     b.HasDiscriminator<int>("EntertainmentType");
 
                     b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("MyLetterBoxd.Models.Genre", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Genres");
+                });
+
+            modelBuilder.Entity("MyLetterBoxd.Models.GenreEntertainment", b =>
+                {
+                    b.Property<int>("GenreID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EntertainmentID")
+                        .HasColumnType("int");
+
+                    b.HasKey("GenreID", "EntertainmentID");
+
+                    b.HasIndex("EntertainmentID");
+
+                    b.ToTable("GenreEntertainments");
                 });
 
             modelBuilder.Entity("MyLetterBoxd.Models.User", b =>
@@ -87,24 +154,6 @@ namespace MyLetterBoxd.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            ID = 1,
-                            FirstName = "John",
-                            LastName = "Doe",
-                            Password = "password",
-                            Username = "JD"
-                        },
-                        new
-                        {
-                            ID = 2,
-                            FirstName = "Jane",
-                            LastName = "Smith",
-                            Password = "password",
-                            Username = "JM"
-                        });
                 });
 
             modelBuilder.Entity("MyLetterBoxd.Models.UserEntertainment", b =>
@@ -120,23 +169,6 @@ namespace MyLetterBoxd.Migrations
                     b.HasIndex("EntertainmentID");
 
                     b.ToTable("UserEntertainments");
-
-                    b.HasData(
-                        new
-                        {
-                            UserID = 1,
-                            EntertainmentID = 1
-                        },
-                        new
-                        {
-                            UserID = 1,
-                            EntertainmentID = 2
-                        },
-                        new
-                        {
-                            UserID = 2,
-                            EntertainmentID = 4
-                        });
                 });
 
             modelBuilder.Entity("MyLetterBoxd.Models.Film", b =>
@@ -144,26 +176,6 @@ namespace MyLetterBoxd.Migrations
                     b.HasBaseType("MyLetterBoxd.Models.Entertainment");
 
                     b.HasDiscriminator().HasValue(1);
-
-                    b.HasData(
-                        new
-                        {
-                            ID = 1,
-                            Actors = "[\"Leonardo DiCaprio\"]",
-                            Directors = "[\"Christopher Nolan\"]",
-                            Genre = "Sci-Fi",
-                            Rating = 4,
-                            Title = "Inception"
-                        },
-                        new
-                        {
-                            ID = 2,
-                            Actors = "[\"Keanu Reeves\"]",
-                            Directors = "[\"The Wachowskis\"]",
-                            Genre = "Sci-Fi",
-                            Rating = 4,
-                            Title = "The Matrix"
-                        });
                 });
 
             modelBuilder.Entity("MyLetterBoxd.Models.Serie", b =>
@@ -174,28 +186,44 @@ namespace MyLetterBoxd.Migrations
                         .HasColumnType("int");
 
                     b.HasDiscriminator().HasValue(2);
+                });
 
-                    b.HasData(
-                        new
-                        {
-                            ID = 3,
-                            Actors = "[\"Bryan Cranston\"]",
-                            Directors = "[\"Vince Gilligan\"]",
-                            Genre = "Crime",
-                            Rating = 4,
-                            Title = "Breaking Bad",
-                            Seasons = 5
-                        },
-                        new
-                        {
-                            ID = 4,
-                            Actors = "[\"Winona Ryder\"]",
-                            Directors = "[\"The Duffer Brothers\"]",
-                            Genre = "Sci-Fi",
-                            Rating = 3,
-                            Title = "Stranger Things",
-                            Seasons = 4
-                        });
+            modelBuilder.Entity("MyLetterBoxd.Models.CastEntertainment", b =>
+                {
+                    b.HasOne("MyLetterBoxd.Models.Cast", "Cast")
+                        .WithMany("CastEntertainments")
+                        .HasForeignKey("CastID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MyLetterBoxd.Models.Entertainment", "Entertainment")
+                        .WithMany("CastEntertainments")
+                        .HasForeignKey("EntertainmentID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cast");
+
+                    b.Navigation("Entertainment");
+                });
+
+            modelBuilder.Entity("MyLetterBoxd.Models.GenreEntertainment", b =>
+                {
+                    b.HasOne("MyLetterBoxd.Models.Entertainment", "Entertainment")
+                        .WithMany("GenreEntertainments")
+                        .HasForeignKey("EntertainmentID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MyLetterBoxd.Models.Genre", "Genre")
+                        .WithMany("GenreEntertainments")
+                        .HasForeignKey("GenreID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Entertainment");
+
+                    b.Navigation("Genre");
                 });
 
             modelBuilder.Entity("MyLetterBoxd.Models.UserEntertainment", b =>
@@ -217,9 +245,23 @@ namespace MyLetterBoxd.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("MyLetterBoxd.Models.Cast", b =>
+                {
+                    b.Navigation("CastEntertainments");
+                });
+
             modelBuilder.Entity("MyLetterBoxd.Models.Entertainment", b =>
                 {
+                    b.Navigation("CastEntertainments");
+
+                    b.Navigation("GenreEntertainments");
+
                     b.Navigation("UserEntertainments");
+                });
+
+            modelBuilder.Entity("MyLetterBoxd.Models.Genre", b =>
+                {
+                    b.Navigation("GenreEntertainments");
                 });
 
             modelBuilder.Entity("MyLetterBoxd.Models.User", b =>

@@ -2,20 +2,15 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyLetterBoxd.Models
 {
-    public enum Rating 
-    {
-        ONE, TWO, THREE, FOUR, FIVE
-    }
     public abstract class Entertainment
     {
-
         public int ID {get; set; }
         public required string Title {get; set; }
-        public required string Genre {get; set; }
-        public List<string> Directors {get; set; } = new List<string>();
-        public List<string> Actors {get; set; } = new List<string>();
-        public Rating? Rating {get; set; }
+        public required string Description{get; set; }
+        public required string ReleaseDate {get; set; }
+        public required double Rating {get; set; }
         public ICollection<UserEntertainment> UserEntertainments { get; set; } = new List<UserEntertainment>();
-
+        public ICollection<GenreEntertainment> GenreEntertainments { get; set; } = new List<GenreEntertainment>();
+        public ICollection<CastEntertainment> CastEntertainments { get; set; } = new List<CastEntertainment>();
     }
 }
