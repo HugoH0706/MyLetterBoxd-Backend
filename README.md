@@ -49,5 +49,11 @@ API endpoints to retrieve information from TMDB:
 4. https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc --> get recent movies from best rated to worst rated
 
 
+# Postman requests
+1. Database endpoints:
+    1. http://localhost:5152/api/tmdb/genres | fills Genre table with all genres available on TMDB
+    2. http://localhost:5152/api/tmdb/movies | Add all popular movies (page 1 TMDB) into my database while storing 10 actors and the director of each movie and creating the right many-to-many relationship pairs between each Entertainment-Genre and Entertainment-Cast.
+
+
 # Room for improvement
 1. Inheritance relationship with User, Cast (Actor/Director)
