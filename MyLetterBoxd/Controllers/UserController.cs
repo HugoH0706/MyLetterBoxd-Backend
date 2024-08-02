@@ -42,7 +42,7 @@ namespace MyLetterBoxd.Controllers
             {
                 return Unauthorized("Invalid username or password.");
             }
-            return Ok(new { Message = "Login successful.", User = user });
+            return Ok(new { Message = "Login successful.", User = user }); // DTO maken om niet alle user info op te sturen
         }
     }
 }
