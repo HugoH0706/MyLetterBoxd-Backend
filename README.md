@@ -52,8 +52,24 @@ API endpoints to retrieve information from TMDB:
 # Postman requests
 1. Database endpoints:
     1. http://localhost:5152/api/tmdb/genres | fills Genre table with all genres available on TMDB
-    2. http://localhost:5152/api/tmdb/movies | Add all popular movies (page 1 TMDB) into my database while storing 10 actors and the director of each movie and creating the right many-to-many relationship pairs between each Entertainment-Genre and Entertainment-Cast.
-
+    2. http://localhost:5152/api/tmdb/movies | Add all popular movies (pages 1-21 TMDB) into my database while storing 10 actors and the director of each movie and creating the right many-to-many relationship pairs between each Entertainment-Genre and Entertainment-Cast.
+    3. http://localhost:5152/api/user/register with the following body adds a new user to the database
+    ```
+    {
+        "username": "Hugo0706",
+        "firstName": "Hugo",
+        "lastName": "Hakkenberg",
+        "password": "SecurePassword123"
+    }
+    ``` 
+    4. http://localhost:5152/api/user/login with the following body logs in a user
+    ```
+    {
+        "username": "Hugo0706",
+        "password": "SecurePassword123"
+    }
+    ```
+    
 
 # Room for improvement
 1. Inheritance relationship with User, Cast (Actor/Director)
