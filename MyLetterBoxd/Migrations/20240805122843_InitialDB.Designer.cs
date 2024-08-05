@@ -11,8 +11,8 @@ using MyLetterBoxd.Database;
 namespace MyLetterBoxd.Migrations
 {
     [DbContext(typeof(MyLetterBoxdContext))]
-    [Migration("20240802135915_GenresStartingAt1")]
-    partial class GenresStartingAt1
+    [Migration("20240805122843_InitialDB")]
+    partial class InitialDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
