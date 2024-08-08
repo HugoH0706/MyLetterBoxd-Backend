@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\hugoh\\Documents\\C#\\MyLetterBoxd\\MyLetterBoxd-Backend\\MyLetterBoxd\\MyLetterBoxd.csproj": {}
+    "C:\\Users\\hugoh\\Documents\\Csharp\\MyLetterBoxd\\MyLetterBoxd-Backend\\MyLetterBoxd\\MyLetterBoxd.csproj": {}
   },
   "projects": {
-    "C:\\Users\\hugoh\\Documents\\C#\\MyLetterBoxd\\MyLetterBoxd-Backend\\MyLetterBoxd\\MyLetterBoxd.csproj": {
+    "C:\\Users\\hugoh\\Documents\\Csharp\\MyLetterBoxd\\MyLetterBoxd-Backend\\MyLetterBoxd\\MyLetterBoxd.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\hugoh\\Documents\\C#\\MyLetterBoxd\\MyLetterBoxd-Backend\\MyLetterBoxd\\MyLetterBoxd.csproj",
+        "projectUniqueName": "C:\\Users\\hugoh\\Documents\\Csharp\\MyLetterBoxd\\MyLetterBoxd-Backend\\MyLetterBoxd\\MyLetterBoxd.csproj",
         "projectName": "MyLetterBoxd",
-        "projectPath": "C:\\Users\\hugoh\\Documents\\C#\\MyLetterBoxd\\MyLetterBoxd-Backend\\MyLetterBoxd\\MyLetterBoxd.csproj",
+        "projectPath": "C:\\Users\\hugoh\\Documents\\Csharp\\MyLetterBoxd\\MyLetterBoxd-Backend\\MyLetterBoxd\\MyLetterBoxd.csproj",
         "packagesPath": "C:\\Users\\hugoh\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\hugoh\\Documents\\C#\\MyLetterBoxd\\MyLetterBoxd-Backend\\MyLetterBoxd\\obj\\",
+        "outputPath": "C:\\Users\\hugoh\\Documents\\Csharp\\MyLetterBoxd\\MyLetterBoxd-Backend\\MyLetterBoxd\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\hugoh\\AppData\\Roaming\\NuGet\\NuGet.Config"

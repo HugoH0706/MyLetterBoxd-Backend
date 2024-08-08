@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "XNkpMKID8Yo=",
+  "dgSpecHash": "Oau6yDXnqXo=",
   "success": true,
-  "projectFilePath": "C:\\Users\\hugoh\\Documents\\C#\\MyLetterBoxd\\MyLetterBoxd-Backend\\MyLetterBoxd\\MyLetterBoxd.csproj",
+  "projectFilePath": "C:\\Users\\hugoh\\Documents\\Csharp\\MyLetterBoxd\\MyLetterBoxd-Backend\\MyLetterBoxd\\MyLetterBoxd.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\hugoh\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\hugoh\\.nuget\\packages\\microsoft.aspnetcore.openapi\\8.0.7\\microsoft.aspnetcore.openapi.8.0.7.nupkg.sha512",
