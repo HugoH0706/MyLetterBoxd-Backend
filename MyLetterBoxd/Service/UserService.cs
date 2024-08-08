@@ -48,5 +48,31 @@ namespace MyLetterBoxd.Service
 
             return user;
         }
+
+        public async Task AddToWatchListAsync(WatchlistRequest request)
+        {
+            var userEntertainment = new UserEntertainment
+            {
+                UserID = request.UserID,
+                EntertainmentID = request.EntertainmentID
+            };
+            await SaveUserEntertainmentAsync(userEntertainment);
+        }
+
+        public async Task SaveUserEntertainmentAsync(UserEntertainment ue)
+        {
+            var existingUE = await _context.UserEntertainments
+                .FirstOrDefaultAsync(e => e.UserID == ue.UserID && e.EntertainmentID == ue.EntertainmentID);
+
+            if(existingUE != null)
+            {
+                Console.WriteLine("Already added to your watchlist");
+            }
+            else 
+            {
+                _context.Add(ue);
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }

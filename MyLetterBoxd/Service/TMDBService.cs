@@ -94,7 +94,7 @@ namespace MyLetterBoxd.Service
             var ge = new List<GenreEntertainment>();
             var ce = new List<CastEntertainment>();
             
-            for(int page = 21; page <= 21; page++)
+            for(int page = 1; page <= 21; page++)
             {
                 var url = $"https://api.themoviedb.org/3/movie/top_rated?language=en-US&page={page}";
                 JObject parsedResponse = await GetApiResponseAsync(url);
