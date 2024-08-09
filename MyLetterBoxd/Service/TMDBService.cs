@@ -21,39 +21,37 @@ namespace MyLetterBoxd.Service
             _context = context;
         }
 
-        public async Task<List<Genre>> GetGenresAsync()
+        private async Task<JObject> GetApiResponseAsync(string url)
         {
-            // Get all genres with their TMDB IDs
-            var options = new RestClientOptions("https://api.themoviedb.org/3/genre/movie/list?language=en"); 
+            var options = new RestClientOptions(url); 
             var client = new RestClient(options);
             var request = new RestRequest("");
             request.AddHeader("accept", "application/json");
             request.AddHeader("Authorization", Environment.GetEnvironmentVariable("API_KEY"));
             
             var response = await client.GetAsync(request);
-            JObject parsedResponse = JObject.Parse(response.Content);
-            List<Genre> genres = parsedResponse["genres"].ToObject<List<Genre>>();
+            if (!response.IsSuccessful)
+            {
+                throw new Exception("Failed to fetch data from TMDB");
+            }
+            return JObject.Parse(response.Content);
+        }
 
-            return genres;
+        public async Task<List<Genre>> GetGenresAsync()
+        {
+            // Get all genres with their TMDB IDs
+            var url = "https://api.themoviedb.org/3/genre/movie/list?language=en";
+            JObject parsedResponse = await GetApiResponseAsync(url);
+            return parsedResponse["genres"].ToObject<List<Genre>>();
         }
 
         public async Task<List<Cast>> GetActorsDirectorsAsync(int movie_id)
         {
             // Use movie_id to get JSON including cast(Actors) and crew(Director), extract useful data and store in List<Cast>
-            string API_ENDPOINT = "https://api.themoviedb.org/3/movie/" + movie_id + "/credits?language=en-US";
-            var options = new RestClientOptions(API_ENDPOINT); 
-            var client = new RestClient(options);
-            var request = new RestRequest("");
-            request.AddHeader("accept", "application/json");
-            request.AddHeader("Authorization", Environment.GetEnvironmentVariable("API_KEY"));
-            
-            var response = await client.GetAsync(request);
-            JObject parsedResponse = JObject.Parse(response.Content);
+            string url = $"https://api.themoviedb.org/3/movie/{movie_id}/credits?language=en-US";
+            JObject parsedResponse = await GetApiResponseAsync(url);
 
-            JToken castToken = parsedResponse["cast"];
-            var cast = new List<Cast>();
-
-            cast = castToken
+            var cast = parsedResponse["cast"]
                 .Where(c => c["known_for_department"] != null && c["known_for_department"].Value<string>() == "Acting" )
                 .Take(10)
                 .Select(c => new Cast
@@ -64,10 +62,8 @@ namespace MyLetterBoxd.Service
                 })
                 .ToList();
 
-            JToken crewToken = parsedResponse["crew"];
-            var directors = crewToken 
-                .Where(c => c["known_for_department"] != null && c["known_for_department"].Value<string>() == "Directing" &&
-                            c["job"] != null && c["job"].Value<string>() == "Director")
+            var directors = parsedResponse["crew"] 
+                .Where(c => c["known_for_department"].Value<string>() == "Directing" && c["job"].Value<string>() == "Director")
                 .Select(c => new Cast
                 {
                     Name = c.Value<string>("name"),
@@ -94,77 +90,70 @@ namespace MyLetterBoxd.Service
         public async Task GetPopularMoviesAsync()
         {
             // Get top rated movies, for each movie link genre id to genre and find corresponding actors and director
-            var options = new RestClientOptions("https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1"); 
-            var client = new RestClient(options);
-            var request = new RestRequest("");
-            request.AddHeader("accept", "application/json");
-            request.AddHeader("Authorization", Environment.GetEnvironmentVariable("API_KEY"));
-            
-            var response = await client.GetAsync(request);
-            if (!response.IsSuccessful)
-            {
-                throw new Exception("Failed to fetch movies from TMDB.");
-            }
-
             var entertainments = new List<Entertainment>();
             var ge = new List<GenreEntertainment>();
             var ce = new List<CastEntertainment>();
             
-            JObject parsedResponse = JObject.Parse(response.Content);
-            JToken resultsToken = parsedResponse["results"];
-            if (resultsToken != null)
+            for(int page = 1; page <= 21; page++)
             {
-                foreach (var result in resultsToken)
+                var url = $"https://api.themoviedb.org/3/movie/top_rated?language=en-US&page={page}";
+                JObject parsedResponse = await GetApiResponseAsync(url);
+
+                JToken resultsToken = parsedResponse["results"];
+                if (resultsToken != null)
                 {
-                    var film = new Film
+                    foreach (var result in resultsToken)
                     {
-                        Title = result.Value<string>("title"),
-                        Description = result.Value<string>("overview"),
-                        ReleaseDate = result.Value<string>("release_date"),
-                        Rating = result.Value<double>("vote_average"),
-                    };
-
-                    var existingFilm = await _context.Entertainments.FirstOrDefaultAsync(f => f.Title == film.Title && f.ReleaseDate == film.ReleaseDate);
-                    if(existingFilm != null)
-                    {
-                        continue;
-                    }
-                    _context.Entertainments.Add(film);
-                    entertainments.Add(film);
-                }
-                await _context.SaveChangesAsync();
-
-                foreach(var result in resultsToken)
-                { 
-                    var film = entertainments.First(f => f.Title == result.Value<string>("title"));
-                    var genreIds = result["genre_ids"].Select(id => (int)id).ToList();
-                    foreach(var genreId in genreIds)
-                    {
-                        var genreEntertainment = new GenreEntertainment
+                        var film = new Film
                         {
-                            GenreID = genreId,
-                            EntertainmentID = film.ID
+                            Title = result.Value<string>("title"),
+                            Description = result.Value<string>("overview"),
+                            ReleaseDate = result.Value<string>("release_date"),
+                            Rating = result.Value<double>("vote_average"),
                         };
-                        ge.Add(genreEntertainment);
-                    }
-                    
-                    List<Cast> availableCast = await GetActorsDirectorsAsync(result.Value<int>("id"));
-                    foreach(var cast in availableCast)
-                    {
-                        var castEntertainment = new CastEntertainment
+
+                        var existingFilm = await _context.Entertainments.FirstOrDefaultAsync(f => f.Title == film.Title && f.ReleaseDate == film.ReleaseDate);
+                        if(existingFilm != null)
                         {
-                            CastID = cast.ID,
-                            EntertainmentID = film.ID
-                        };
-                        ce.Add(castEntertainment);
+                            continue;
+                        }
+                        _context.Entertainments.Add(film);
+                        entertainments.Add(film);
                     }
+                    await _context.SaveChangesAsync();
+
+                    foreach(var result in resultsToken)
+                    { 
+                        var film = entertainments.First(f => f.Title == result.Value<string>("title"));
+                        var genreIds = result["genre_ids"].Select(id => (int)id).ToList();
+                        foreach(var genreId in genreIds)
+                        {
+                            var genreEntertainment = new GenreEntertainment
+                            {
+                                GenreID = genreId,
+                                EntertainmentID = film.ID
+                            };
+                            ge.Add(genreEntertainment);
+                        }
+                        
+                        List<Cast> availableCast = await GetActorsDirectorsAsync(result.Value<int>("id"));
+                        foreach(var cast in availableCast)
+                        {
+                            var castEntertainment = new CastEntertainment
+                            {
+                                CastID = cast.ID,
+                                EntertainmentID = film.ID
+                            };
+                            ce.Add(castEntertainment);
+                        }
+                    }
+                    await SaveGenreEntertainmentAsync(ge);
+                    await SaveCastEntertainmentAsync(ce);
                 }
-                await SaveGenreEntertainmentAsync(ge);
-                await SaveCastEntertainmentAsync(ce);
-            }
-            else
-            {
-                Console.WriteLine("No results found in the response.");
+                else
+                {
+                    Console.WriteLine("No results found in the response.");
+                }
             }
         }
 

@@ -33,6 +33,13 @@ namespace MyLetterBoxd.Controllers
             return Ok("User registered successfully.");
         }
 
+        [HttpPost("userentertainment")]
+        public async Task<IActionResult> Watchlist([FromBody] WatchlistRequest request)
+        {
+            await _userService.AddToWatchListAsync(request);
+            return Ok("User registered successfully.");
+        }
+
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
