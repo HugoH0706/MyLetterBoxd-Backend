@@ -1,4 +1,6 @@
 using MyLetterBoxd.Database;
+using MyLetterBoxd.DTO;
+using MyLetterBoxd.Models;
 
 namespace MyLetterBoxd.Service
 {
@@ -11,37 +13,25 @@ namespace MyLetterBoxd.Service
             _context = context;
         }
 
-        // public async Task AddActorToFilmAsync(int filmId, string actor)
-        // {
-        //     var film = await _context.Films.FindAsync(filmId);
+        public List<EntertainmentRequest> GetAllFilms()
+        {
+            var films = _context.Set<Film>()
+                            .Select(f => new EntertainmentRequest
+                            {
+                                ID = f.ID,
+                                Title = f.Title
+                            })
+                            .ToList();
+            return films;
+        }
 
-        //     if (film == null)
-        //     {
-        //         throw new ArgumentException("Film not found");
-        //     }
-
-        //     if (!film.Actors.Contains(actor))
-        //     {
-        //         film.Actors.Add(actor);
-        //         await _context.SaveChangesAsync();
-        //     }
-        // }
-
-        // public async Task AddDirectorToFilmAsync(int filmId, string director)
-        // {
-        //     var film = await _context.Films.FindAsync(filmId);
-
-        //     if (film == null)
-        //     {
-        //         throw new ArgumentException("Film not found");
-        //     }
-
-        //     if (!film.Directors.Contains(director))
-        //     {
-        //         film.Directors.Add(director);
-        //         await _context.SaveChangesAsync();
-        //     }
-        // }
+        public Entertainment GetFilmById(int id)
+        {
+            var film = _context.Set<Film>()
+                            .Where(film => film.ID == id)
+                            .FirstOrDefault();
+            return film;
+        }
     }
 }
 

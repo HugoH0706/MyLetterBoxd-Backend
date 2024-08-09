@@ -26,6 +26,7 @@ builder.Services.AddDbContext<MyLetterBoxdContext>(options =>
 });
 
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<EntertainmentService>();
 builder.Services.AddScoped<TMDBService>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
