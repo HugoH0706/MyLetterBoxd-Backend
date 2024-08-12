@@ -35,6 +35,25 @@ namespace MyLetterBoxd.Controllers
             return Ok(film);
         }
 
+        [HttpGet("savedentertainment/{id}")]
+        public IActionResult FetchUserEntertainment([FromRoute] int id)
+        {
+            var userEntertainment = _entertainmentService.GetEntertainmentByUserId(id);
+            var films = new List<EntertainmentRequest>();
+
+            foreach(var ue in userEntertainment)
+            {
+                var entertainment = _entertainmentService.GetFilmById(ue.EntertainmentID);
+                var er = new EntertainmentRequest 
+                {
+                    ID = entertainment.ID,
+                    Title = entertainment.Title
+                };
+                films.Add(er);
+            }
+    	    return Ok(films);
+        }
+
         [HttpGet("castentertainment/{id}")]
         public IActionResult FetchCastEntertainment([FromRoute] int id)
         {
@@ -46,7 +65,6 @@ namespace MyLetterBoxd.Controllers
                 CastRequest cr = _entertainmentService.GetCastById(ce.CastID);
                 cast.Add(cr);
             }
-
     	    return Ok(cast);
         }
 
@@ -61,9 +79,14 @@ namespace MyLetterBoxd.Controllers
                 Genre genre = _entertainmentService.GetGenreById(ge.GenreID);
                 genres.Add(genre.Name);
             }
-
     	    return Ok(genres);
         }
-        
+
+        [HttpDelete("savedentertainment/{userId}/{entertainmentId}")]
+        public async Task<IActionResult> DeleteUserEntertainment([FromRoute] int userId, [FromRoute] int entertainmentId)
+        {
+            await _entertainmentService.RemoveEntertainmentFromList(userId, entertainmentId);
+            return Ok("Ok");
+        }        
     }
 }
