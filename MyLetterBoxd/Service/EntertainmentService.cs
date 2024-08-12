@@ -1,6 +1,7 @@
 using MyLetterBoxd.Database;
 using MyLetterBoxd.DTO;
 using MyLetterBoxd.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace MyLetterBoxd.Service
 {
@@ -23,6 +24,14 @@ namespace MyLetterBoxd.Service
                             })
                             .ToList();
             return films;
+        }
+
+        public List<UserEntertainment> GetEntertainmentByUserId(int id)
+        {
+            var userEntertainment = _context.Set<UserEntertainment>()
+                            .Where(ue => ue.UserID == id)
+                            .ToList();
+            return userEntertainment;
         }
 
         public List<CastEntertainment> GetCastByEntertainmentId(int id)
@@ -67,6 +76,21 @@ namespace MyLetterBoxd.Service
                             .Where(film => film.ID == id)
                             .FirstOrDefault();
             return film;
+        }
+
+        public async Task<bool> RemoveEntertainmentFromList(int userId, int entertainmentId)
+        {
+            var userEntertainment = await _context.UserEntertainments
+                .FirstOrDefaultAsync(ue => ue.UserID == userId && ue.EntertainmentID == entertainmentId);
+            Console.WriteLine("Hello2");
+            if (userEntertainment == null)
+            {
+                return false;
+            }
+            Console.WriteLine("Hello");
+            _context.UserEntertainments.Remove(userEntertainment);
+            await _context.SaveChangesAsync();  
+            return true;
         }
     }
 }
