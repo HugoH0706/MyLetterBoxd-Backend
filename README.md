@@ -71,6 +71,15 @@ API endpoints to retrieve information from TMDB:
     ```
     5. GET http://localhost:5152/api/entertainment/films | returns all ID-Title tuples of every film in the database 
     6. GET http://localhost:5152/api/entertainment/films/{id} | returns all data about a specific film
+    7. GET http://localhost:5152/api/entertainment/castentertainment/{id} | returns (name, character) tuple of all cast members of specific film
+    8. GET http://localhost:5152/api/entertainment/genresentertainment/{id} | returns all genre names of a specific film
+    9. POST http://localhost:5152/api/user/userentertainment with the following body to add an entertainmentID-userID tuple
+    ```
+    {
+        "userID": "1",
+        "entertainmentID": "1"
+    }
+    ```
     
 # Room for improvement
 1. Inheritance relationship with User, Cast (Actor/Director)
