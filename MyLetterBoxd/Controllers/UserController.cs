@@ -37,7 +37,13 @@ namespace MyLetterBoxd.Controllers
         public async Task<IActionResult> Watchlist([FromBody] WatchlistRequest request)
         {
             await _userService.AddToWatchListAsync(request);
-            return Ok("User registered successfully.");
+
+            var response = new 
+            {
+                Success = true,
+                Message = "User added entertainment to watchlist"
+            };
+            return Ok(response);
         }
 
         [HttpPost("login")]
@@ -49,7 +55,7 @@ namespace MyLetterBoxd.Controllers
             {
                 return Unauthorized("Invalid username or password.");
             }
-            return Ok(new { Message = "Login successful.", User = user }); // DTO maken om niet alle user info op te sturen
+            return Ok(user.ID);
         }
     }
 }
